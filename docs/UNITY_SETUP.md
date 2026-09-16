@@ -14,7 +14,7 @@ Recommended install through Unity Hub:
 ## Opening The Project
 
 1. Open Unity Hub.
-2. Add the folder `/mnt/c/Dev/SchoolYardArea`.
+2. Add the folder `/mnt/c/Dev/SchoolYardArena`.
 3. Open the project with a supported LTS editor.
 4. Set platform to Android.
 5. Create the first scene at `Assets/Scenes/ArenaPrototype.unity`.
@@ -40,7 +40,7 @@ Create:
 
 Recommended first package id:
 
-`com.tauris.schoolyardarea`
+`com.tauris.schoolyardarena`
 
 Recommended orientation:
 

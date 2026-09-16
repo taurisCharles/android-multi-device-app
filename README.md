@@ -1,6 +1,6 @@
-# SchoolYardArea
+# SchoolYardArena
 
-SchoolYardArea is the working codename for an Android-first schoolyard arcade arena game.
+SchoolYardArena is the working codename for an Android-first schoolyard arcade arena game.
 
 Planned GitHub repository: `android-multi-device-app`
 

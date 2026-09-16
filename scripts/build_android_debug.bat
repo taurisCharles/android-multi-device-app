@@ -2,7 +2,7 @@
 setlocal
 
 set UNITY_EXE=C:\Program Files\Unity 6000.6.0f1\Editor\Unity.exe
-set PROJECT_DIR=C:\Dev\SchoolYardArea
+set PROJECT_DIR=C:\Dev\SchoolYardArena
 set LOG_FILE=%PROJECT_DIR%\Builds\unity-build.log
 
 if not exist "%UNITY_EXE%" (

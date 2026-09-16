@@ -60,7 +60,7 @@ namespace SchoolYardArea.Editor
 
         private static void ConfigureAndroidExternalTools()
         {
-            AndroidExternalToolsSettings.jdkRootPath = @"C:\Dev\SchoolYardArea\tools\jdk17\jdk-17.0.20+8";
+            AndroidExternalToolsSettings.jdkRootPath = @"C:\Dev\SchoolYardArena\tools\jdk17\jdk-17.0.20+8";
             AndroidExternalToolsSettings.sdkRootPath = @"C:\Users\cjlew\AppData\Local\Android\Sdk";
             AndroidExternalToolsSettings.ndkRootPath = @"C:\Users\cjlew\AppData\Local\Android\Sdk\ndk\27.2.12479018";
         }

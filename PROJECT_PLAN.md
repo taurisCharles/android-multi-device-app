@@ -1,6 +1,6 @@
-# SchoolYardArea MVP Plan
+# SchoolYardArena MVP Plan
 
-Working codename: SchoolYardArea.
+Working codename: SchoolYardArena.
 
 Planned GitHub repository name: android-multi-device-app.
 
@@ -14,7 +14,7 @@ Tech selections:
 
 ## Product Direction
 
-SchoolYardArea is a simple top-down Android arena game inspired by kid-friendly arcade brawlers. Players pick a character, enter a small schoolyard-themed arena, battle bots, earn wins, and unlock more characters.
+SchoolYardArena is a simple top-down Android arena game inspired by kid-friendly arcade brawlers. Players pick a character, enter a small schoolyard-themed arena, battle bots, earn wins, and unlock more characters.
 
 The first solo prototype should prove movement, combat, powers, match flow, and unlocks. The multiplayer MVP should let 2-3 kids play together cooperatively against bots.
 
