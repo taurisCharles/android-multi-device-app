@@ -47,20 +47,18 @@ namespace SchoolYardArea.Editor
 
             var botSpawns = new List<Vector3>
             {
-                new(-4.7f, 3f, 0f),
-                new(0f, 1.6f, 0f),
-                new(4.7f, 3f, 0f)
+                new(0f, 2.6f, 0f)
             };
             var botHealth = new List<Health>();
             var botTransforms = new List<Transform>();
-            var botNames = new[] { "Owen Bot", "Zoe Bot", "Dylan Bot" };
+            var botNames = new[] { "Owen Bot" };
 
             for (var i = 0; i < botSpawns.Count; i++)
             {
                 var bot = CreateFighter(botNames[i], botSpawns[i], 0.84f, botSprite, bodySprite, squareSprite, false);
                 var chase = bot.GetComponent<BotChaseController>();
                 chase.SetTarget(player.transform);
-                chase.Configure(2.8f + i * 0.25f, 0.66f);
+                chase.Configure(2.65f, 0.66f);
                 botHealth.Add(bot.GetComponent<Health>());
                 botTransforms.Add(bot.transform);
             }
