@@ -14,6 +14,7 @@ namespace SchoolYardArea.Editor
     {
         private const string ScenePath = "Assets/Scenes/ArenaPrototype.unity";
         private const string GeneratedArtPath = "Assets/Art/Generated";
+        private const string ArenaArtPath = "Assets/Art/Arenas/schoolyard_arena.png";
 
         [MenuItem("SchoolYardArena/Create Prototype Scene")]
         public static void CreatePrototypeScene()
@@ -42,9 +43,17 @@ namespace SchoolYardArea.Editor
             camera.transform.position = new Vector3(0f, 0f, -10f);
 
             CreateBackdrop(squareSprite);
-            CreateArenaFloor(floorSprite);
-            CreateCourtLines(lineSprite);
-            CreateSchoolyardProps(squareSprite, bodySprite);
+            var importedArena = LoadSpriteAsset(ArenaArtPath, 128f);
+            if (importedArena != null)
+            {
+                CreateArenaFloor(importedArena);
+            }
+            else
+            {
+                CreateArenaFloor(floorSprite);
+                CreateCourtLines(lineSprite);
+                CreateSchoolyardProps(squareSprite, bodySprite);
+            }
             CreateBounds();
             var pickups = CreatePickups(appleSprite, squareSprite);
 
@@ -418,6 +427,26 @@ namespace SchoolYardArea.Editor
                 importer.textureType = TextureImporterType.Sprite;
                 importer.spritePixelsPerUnit = 64f;
                 importer.mipmapEnabled = false;
+                importer.SaveAndReimport();
+            }
+
+            return AssetDatabase.LoadAssetAtPath<Sprite>(path);
+        }
+
+        private static Sprite LoadSpriteAsset(string path, float pixelsPerUnit)
+        {
+            if (!File.Exists(path))
+            {
+                return null;
+            }
+
+            AssetDatabase.ImportAsset(path);
+            if (AssetImporter.GetAtPath(path) is TextureImporter importer)
+            {
+                importer.textureType = TextureImporterType.Sprite;
+                importer.spritePixelsPerUnit = pixelsPerUnit;
+                importer.mipmapEnabled = false;
+                importer.filterMode = FilterMode.Bilinear;
                 importer.SaveAndReimport();
             }
 

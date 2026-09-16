@@ -206,6 +206,26 @@ Avoid:
 - Real school logos/names.
 - Any asset with unclear commercial/test distribution rights.
 
+## Reference Handling
+
+Brawl Stars screenshots and community posts can be used as visual references for quality level and readability, but not as source assets.
+
+Use references to study:
+
+- Chunky character silhouettes.
+- Bright, high-contrast arenas.
+- Isometric/top-down staging.
+- Large readable mobile buttons.
+- Strong hit effects and cooldown feedback.
+- Clear separation between character, ground, pickups, and UI.
+
+Do not:
+
+- Copy Supercell/Brawl Stars characters, UI, maps, icons, screenshots, or textures.
+- Trace screenshots.
+- Recreate named brawlers or branded interface elements.
+- Import Reddit or Brawl Stars images into the Unity project as game assets.
+
 ## Definition Of Done For The Visual Slice
 
 The visual slice is done when a phone screenshot shows:
