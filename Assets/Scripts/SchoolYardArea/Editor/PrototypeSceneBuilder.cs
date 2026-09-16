@@ -26,6 +26,7 @@ namespace SchoolYardArea.Editor
             var lineSprite = CreateSpriteAsset("court_line", new Color(0.95f, 0.88f, 0.63f), SpriteShape.Square);
             var bodySprite = CreateSpriteAsset("body_marker", Color.white, SpriteShape.Circle);
             var squareSprite = CreateSpriteAsset("ui_square", Color.white, SpriteShape.Square);
+            var appleSprite = CreateSpriteAsset("apple_pickup", new Color(0.9f, 0.05f, 0.04f), SpriteShape.Circle);
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             Physics2D.gravity = Vector2.zero;
@@ -34,20 +35,23 @@ namespace SchoolYardArea.Editor
             camera.tag = "MainCamera";
             var cameraComponent = camera.AddComponent<Camera>();
             cameraComponent.orthographic = true;
-            cameraComponent.orthographicSize = 6.2f;
-            cameraComponent.backgroundColor = new Color(0.18f, 0.31f, 0.34f);
+            cameraComponent.orthographicSize = 7.1f;
+            cameraComponent.backgroundColor = new Color(0.23f, 0.36f, 0.39f);
             camera.transform.position = new Vector3(0f, 0f, -10f);
 
+            CreateBackdrop(squareSprite);
             CreateArenaFloor(floorSprite);
             CreateCourtLines(lineSprite);
+            CreateSchoolyardProps(squareSprite, bodySprite);
             CreateBounds();
+            var pickups = CreatePickups(appleSprite, squareSprite);
 
-            var playerSpawn = new Vector3(0f, -2.8f, 0f);
+            var playerSpawn = new Vector3(0f, -4.15f, 0f);
             var player = CreateFighter("Helena", playerSpawn, 0.9f, playerSprite, bodySprite, squareSprite, true);
 
             var botSpawns = new List<Vector3>
             {
-                new(0f, 2.6f, 0f)
+                new(0f, 4.1f, 0f)
             };
             var botHealth = new List<Health>();
             var botTransforms = new List<Transform>();
@@ -72,7 +76,8 @@ namespace SchoolYardArea.Editor
                 playerSpawn,
                 botHealth,
                 botTransforms,
-                botSpawns);
+                botSpawns,
+                pickups);
 
             EditorSceneManager.SaveScene(scene, ScenePath);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
@@ -84,7 +89,7 @@ namespace SchoolYardArea.Editor
         {
             var floor = new GameObject("Schoolyard Arena Floor");
             floor.name = "Schoolyard Arena Floor";
-            floor.transform.localScale = new Vector3(12f, 8f, 1f);
+            floor.transform.localScale = new Vector3(18.6f, 11.4f, 1f);
             floor.transform.position = Vector3.zero;
             var renderer = floor.AddComponent<SpriteRenderer>();
             renderer.sprite = sprite;
@@ -93,11 +98,16 @@ namespace SchoolYardArea.Editor
 
         private static void CreateCourtLines(Sprite sprite)
         {
-            CreateLine("Center Line", new Vector2(0f, 0f), new Vector2(12f, 0.08f), sprite);
-            CreateLine("Left Lane", new Vector2(-3.7f, 0f), new Vector2(0.08f, 7.8f), sprite);
-            CreateLine("Right Lane", new Vector2(3.7f, 0f), new Vector2(0.08f, 7.8f), sprite);
-            CreateLine("Top Boundary Paint", new Vector2(0f, 3.85f), new Vector2(12f, 0.08f), sprite);
-            CreateLine("Bottom Boundary Paint", new Vector2(0f, -3.85f), new Vector2(12f, 0.08f), sprite);
+            CreateLine("Center Line", new Vector2(0f, 0f), new Vector2(18.6f, 0.08f), sprite);
+            CreateLine("Left Lane", new Vector2(-5.8f, 0f), new Vector2(0.08f, 11.1f), sprite);
+            CreateLine("Right Lane", new Vector2(5.8f, 0f), new Vector2(0.08f, 11.1f), sprite);
+            CreateLine("Top Boundary Paint", new Vector2(0f, 5.55f), new Vector2(18.6f, 0.08f), sprite);
+            CreateLine("Bottom Boundary Paint", new Vector2(0f, -5.55f), new Vector2(18.6f, 0.08f), sprite);
+            CreateLine("Hopscotch Top", new Vector2(-7.6f, 2.2f), new Vector2(1.35f, 0.08f), sprite);
+            CreateLine("Hopscotch Bottom", new Vector2(-7.6f, 1.25f), new Vector2(1.35f, 0.08f), sprite);
+            CreateLine("Hopscotch Left", new Vector2(-8.25f, 1.72f), new Vector2(0.08f, 0.95f), sprite);
+            CreateLine("Hopscotch Right", new Vector2(-6.95f, 1.72f), new Vector2(0.08f, 0.95f), sprite);
+            CreateLine("Free Throw Arc", new Vector2(7.25f, -2.4f), new Vector2(2.3f, 0.08f), sprite);
         }
 
         private static void CreateLine(string name, Vector2 position, Vector2 scale, Sprite sprite)
@@ -246,10 +256,10 @@ namespace SchoolYardArea.Editor
 
         private static void CreateBounds()
         {
-            CreateWall("Top Wall", new Vector2(0f, 4.22f), new Vector2(12.5f, 0.4f));
-            CreateWall("Bottom Wall", new Vector2(0f, -4.22f), new Vector2(12.5f, 0.4f));
-            CreateWall("Left Wall", new Vector2(-6.22f, 0f), new Vector2(0.4f, 8.4f));
-            CreateWall("Right Wall", new Vector2(6.22f, 0f), new Vector2(0.4f, 8.4f));
+            CreateWall("Top Wall", new Vector2(0f, 5.95f), new Vector2(19.2f, 0.4f));
+            CreateWall("Bottom Wall", new Vector2(0f, -5.95f), new Vector2(19.2f, 0.4f));
+            CreateWall("Left Wall", new Vector2(-9.55f, 0f), new Vector2(0.4f, 11.8f));
+            CreateWall("Right Wall", new Vector2(9.55f, 0f), new Vector2(0.4f, 11.8f));
         }
 
         private static void CreateWall(string name, Vector2 position, Vector2 size)
@@ -258,6 +268,77 @@ namespace SchoolYardArea.Editor
             wall.transform.position = position;
             var collider = wall.AddComponent<BoxCollider2D>();
             collider.size = size;
+        }
+
+        private static void CreateBackdrop(Sprite squareSprite)
+        {
+            CreateSpriteObject("Grass Left", squareSprite, new Vector3(-10.8f, 0f, 0f), new Vector3(2.8f, 13f, 1f), new Color(0.24f, 0.39f, 0.27f), -20);
+            CreateSpriteObject("Grass Right", squareSprite, new Vector3(10.8f, 0f, 0f), new Vector3(2.8f, 13f, 1f), new Color(0.24f, 0.39f, 0.27f), -20);
+            CreateSpriteObject("Top Asphalt", squareSprite, new Vector3(0f, 6.6f, 0f), new Vector3(24f, 1.8f, 1f), new Color(0.38f, 0.42f, 0.42f), -21);
+            CreateSpriteObject("Bottom Asphalt", squareSprite, new Vector3(0f, -6.6f, 0f), new Vector3(24f, 1.8f, 1f), new Color(0.38f, 0.42f, 0.42f), -21);
+        }
+
+        private static void CreateSchoolyardProps(Sprite squareSprite, Sprite bodySprite)
+        {
+            CreateSpriteObject("Bench Seat", squareSprite, new Vector3(-7.5f, -4.65f, 0f), new Vector3(2.2f, 0.18f, 1f), new Color(0.45f, 0.24f, 0.12f), -2);
+            CreateSpriteObject("Bench Leg Left", squareSprite, new Vector3(-8.25f, -4.9f, 0f), new Vector3(0.14f, 0.4f, 1f), new Color(0.17f, 0.17f, 0.16f), -1);
+            CreateSpriteObject("Bench Leg Right", squareSprite, new Vector3(-6.75f, -4.9f, 0f), new Vector3(0.14f, 0.4f, 1f), new Color(0.17f, 0.17f, 0.16f), -1);
+            CreateSpriteObject("Basketball Hoop Pole", squareSprite, new Vector3(8.15f, 4.35f, 0f), new Vector3(0.16f, 1.5f, 1f), new Color(0.18f, 0.18f, 0.18f), -1);
+            CreateSpriteObject("Basketball Backboard", squareSprite, new Vector3(8.15f, 5.1f, 0f), new Vector3(1.05f, 0.52f, 1f), new Color(0.92f, 0.94f, 0.9f), -1);
+            CreateSpriteObject("Basketball Rim", bodySprite, new Vector3(8.15f, 4.8f, 0f), new Vector3(0.55f, 0.18f, 1f), new Color(0.95f, 0.28f, 0.12f), 0);
+            CreateSpriteObject("Lunch Ball", bodySprite, new Vector3(6.8f, -4.55f, 0f), new Vector3(0.38f, 0.38f, 1f), new Color(0.95f, 0.48f, 0.12f), 0);
+        }
+
+        private static List<GameObject> CreatePickups(Sprite appleSprite, Sprite squareSprite)
+        {
+            var pickups = new List<GameObject>();
+            var positions = new[]
+            {
+                new Vector3(-6.8f, 3.95f, 0f),
+                new Vector3(6.95f, 2.2f, 0f),
+                new Vector3(-4.8f, -4.45f, 0f),
+                new Vector3(5.55f, -3.85f, 0f)
+            };
+
+            foreach (var position in positions)
+            {
+                pickups.Add(CreateApplePickup(position, appleSprite, squareSprite));
+            }
+
+            return pickups;
+        }
+
+        private static GameObject CreateApplePickup(Vector3 position, Sprite appleSprite, Sprite squareSprite)
+        {
+            var pickup = new GameObject("Apple Health Pickup");
+            pickup.transform.position = position;
+            pickup.transform.localScale = Vector3.one * 0.72f;
+            CreateSpriteChild("Apple Shadow", pickup.transform, appleSprite, new Vector3(0.04f, -0.08f, 0f), new Vector3(0.64f, 0.28f, 1f), new Color(0f, 0f, 0f, 0.2f), 3);
+            CreateSpriteChild("Apple Body", pickup.transform, appleSprite, Vector3.zero, new Vector3(0.5f, 0.5f, 1f), new Color(0.92f, 0.08f, 0.05f), 4);
+            CreateSpriteChild("Apple Leaf", pickup.transform, squareSprite, new Vector3(0.15f, 0.28f, 0f), new Vector3(0.22f, 0.1f, 1f), new Color(0.18f, 0.7f, 0.24f), 5);
+            var collider = pickup.AddComponent<CircleCollider2D>();
+            collider.isTrigger = true;
+            collider.radius = 0.42f;
+            pickup.AddComponent<HealthPickup>();
+            return pickup;
+        }
+
+        private static SpriteRenderer CreateSpriteObject(
+            string name,
+            Sprite sprite,
+            Vector3 position,
+            Vector3 scale,
+            Color color,
+            int sortingOrder)
+        {
+            var gameObject = new GameObject(name);
+            gameObject.transform.position = position;
+            gameObject.transform.localScale = scale;
+            var renderer = gameObject.AddComponent<SpriteRenderer>();
+            renderer.sprite = sprite;
+            renderer.color = color;
+            renderer.sortingOrder = sortingOrder;
+            return renderer;
         }
 
         private static Sprite CreateSpriteAsset(string name, Color color, SpriteShape shape)

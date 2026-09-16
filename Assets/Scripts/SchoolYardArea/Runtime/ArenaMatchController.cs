@@ -15,6 +15,7 @@ namespace SchoolYardArea.Runtime
         [SerializeField] private List<Health> botHealth = new();
         [SerializeField] private List<Transform> botTransforms = new();
         [SerializeField] private List<Vector3> botSpawnPoints = new();
+        [SerializeField] private List<GameObject> pickups = new();
         [SerializeField] private Transform playerTransform;
         [SerializeField] private Vector3 playerSpawnPoint;
 
@@ -33,7 +34,8 @@ namespace SchoolYardArea.Runtime
             Vector3 playerSpawn,
             List<Health> bots,
             List<Transform> botObjects,
-            List<Vector3> botSpawns)
+            List<Vector3> botSpawns,
+            List<GameObject> roundPickups)
         {
             playerHealth = player;
             playerInput = input;
@@ -43,6 +45,7 @@ namespace SchoolYardArea.Runtime
             botHealth = bots;
             botTransforms = botObjects;
             botSpawnPoints = botSpawns;
+            pickups = roundPickups;
         }
 
         private void Start()
@@ -143,6 +146,11 @@ namespace SchoolYardArea.Runtime
                 {
                     botTransforms[i].position = botSpawnPoints[i];
                 }
+            }
+
+            foreach (var pickup in pickups)
+            {
+                pickup.SetActive(true);
             }
         }
 
