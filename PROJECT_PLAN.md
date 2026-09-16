@@ -105,6 +105,12 @@ Visual tone:
 - Chalk lines, cones, hopscotch patterns, playground markings, backpacks, dodgeballs, lunch tables, and gym mats are good environmental motifs.
 - Avoid real school names, logos, uniforms, or identifying details.
 
+Art direction:
+
+- The prototype currently uses generated placeholder sprites.
+- The next major improvement should be an asset-driven visual slice, not more generated shape polish.
+- See `docs/ART_DIRECTION.md` for the target 2D/2.5D mobile arcade style, asset checklist, and acceptance criteria.
+
 ## Core Loop
 
 1. Player chooses an unlocked character.
