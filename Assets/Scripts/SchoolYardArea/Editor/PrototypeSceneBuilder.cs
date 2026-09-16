@@ -159,9 +159,18 @@ namespace SchoolYardArea.Editor
                 fighter.AddComponent<BotContactDamage>();
             }
 
-            CreateAvatar(name, fighter.transform, markerSprite, bodySprite, squareSprite, playerControlled);
+            var visualRoot = new GameObject("Visual Root");
+            visualRoot.transform.SetParent(fighter.transform);
+            visualRoot.transform.localPosition = Vector3.zero;
+            visualRoot.transform.localScale = Vector3.one;
+
+            CreateAvatar(name, visualRoot.transform, markerSprite, bodySprite, squareSprite, playerControlled);
             CreateHealthBar(fighter.transform, health, squareSprite, playerControlled);
             CreateNameLabel(name, fighter.transform);
+            var motionJuice = fighter.AddComponent<CharacterMotionJuice>();
+            var motionSerialized = new SerializedObject(motionJuice);
+            motionSerialized.FindProperty("visualRoot").objectReferenceValue = visualRoot.transform;
+            motionSerialized.ApplyModifiedPropertiesWithoutUndo();
             fighter.AddComponent<DamageFlash>();
             return fighter;
         }
@@ -319,8 +328,14 @@ namespace SchoolYardArea.Editor
             pickup.transform.position = position;
             pickup.transform.localScale = Vector3.one * 0.72f;
             CreateSpriteChild("Apple Shadow", pickup.transform, appleSprite, new Vector3(0.04f, -0.08f, 0f), new Vector3(0.64f, 0.28f, 1f), new Color(0f, 0f, 0f, 0.2f), 3);
-            CreateSpriteChild("Apple Body", pickup.transform, appleSprite, Vector3.zero, new Vector3(0.5f, 0.5f, 1f), new Color(0.92f, 0.08f, 0.05f), 4);
-            CreateSpriteChild("Apple Leaf", pickup.transform, squareSprite, new Vector3(0.15f, 0.28f, 0f), new Vector3(0.22f, 0.1f, 1f), new Color(0.18f, 0.7f, 0.24f), 5);
+            var appleVisual = new GameObject("Apple Visual");
+            appleVisual.transform.SetParent(pickup.transform);
+            appleVisual.transform.localPosition = Vector3.zero;
+            appleVisual.transform.localScale = Vector3.one;
+            CreateSpriteChild("Apple Glow", appleVisual.transform, appleSprite, Vector3.zero, new Vector3(0.78f, 0.78f, 1f), new Color(1f, 0.25f, 0.12f, 0.22f), 3);
+            CreateSpriteChild("Apple Body", appleVisual.transform, appleSprite, Vector3.zero, new Vector3(0.5f, 0.5f, 1f), new Color(0.92f, 0.08f, 0.05f), 4);
+            CreateSpriteChild("Apple Leaf", appleVisual.transform, squareSprite, new Vector3(0.15f, 0.28f, 0f), new Vector3(0.22f, 0.1f, 1f), new Color(0.18f, 0.7f, 0.24f), 5);
+            appleVisual.AddComponent<BobAndGlow>();
             var collider = pickup.AddComponent<CircleCollider2D>();
             collider.isTrigger = true;
             collider.radius = 0.42f;
