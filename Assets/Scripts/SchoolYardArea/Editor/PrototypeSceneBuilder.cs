@@ -1,8 +1,4 @@
 using System.IO;
-using SchoolYardArea.AI;
-using SchoolYardArea.Combat;
-using SchoolYardArea.Input;
-using SchoolYardArea.Runtime;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -12,11 +8,16 @@ namespace SchoolYardArea.Editor
     public static class PrototypeSceneBuilder
     {
         private const string ScenePath = "Assets/Scenes/ArenaPrototype.unity";
+        private const string GeneratedArtPath = "Assets/Art/Generated";
 
-        [MenuItem("SchoolYardArea/Create Prototype Scene")]
+        [MenuItem("SchoolYardArena/Create Prototype Scene")]
         public static void CreatePrototypeScene()
         {
             Directory.CreateDirectory("Assets/Scenes");
+            Directory.CreateDirectory(GeneratedArtPath);
+            var floorSprite = CreateSpriteAsset("arena_floor", new Color(0.74f, 0.62f, 0.45f));
+            var playerSprite = CreateSpriteAsset("player_marker", new Color(0.23f, 0.7f, 0.45f));
+            var botSprite = CreateSpriteAsset("bot_marker", new Color(0.9f, 0.25f, 0.2f));
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
@@ -28,11 +29,11 @@ namespace SchoolYardArea.Editor
             cameraComponent.backgroundColor = new Color(0.16f, 0.32f, 0.34f);
             camera.transform.position = new Vector3(0f, 0f, -10f);
 
-            CreateArenaFloor();
-            var player = CreatePlayer();
-            CreateBot(new Vector2(3.5f, 2.5f), player.transform);
-            CreateBot(new Vector2(-3.5f, 2.5f), player.transform);
-            CreateBot(new Vector2(0f, -3.2f), player.transform);
+            CreateArenaFloor(floorSprite);
+            CreateMarker("Player Helena Prototype", Vector2.zero, 0.8f, playerSprite);
+            CreateMarker("Lunchyard Bot", new Vector2(3.5f, 2.5f), 0.7f, botSprite);
+            CreateMarker("Lunchyard Bot", new Vector2(-3.5f, 2.5f), 0.7f, botSprite);
+            CreateMarker("Lunchyard Bot", new Vector2(0f, -3.2f), 0.7f, botSprite);
 
             EditorSceneManager.SaveScene(scene, ScenePath);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
@@ -40,69 +41,59 @@ namespace SchoolYardArea.Editor
             AssetDatabase.Refresh();
         }
 
-        private static void CreateArenaFloor()
+        private static void CreateArenaFloor(Sprite sprite)
         {
-            var floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var floor = new GameObject("Schoolyard Arena Floor");
             floor.name = "Schoolyard Arena Floor";
-            floor.transform.localScale = new Vector3(12f, 8f, 0.2f);
+            floor.transform.localScale = new Vector3(12f, 8f, 1f);
             floor.transform.position = Vector3.zero;
-            var renderer = floor.GetComponent<Renderer>();
-            renderer.sharedMaterial = CreateMaterial("ArenaFloor_Mat", new Color(0.74f, 0.62f, 0.45f));
+            var renderer = floor.AddComponent<SpriteRenderer>();
+            renderer.sprite = sprite;
+            renderer.sortingOrder = -10;
         }
 
-        private static GameObject CreatePlayer()
+        private static void CreateMarker(string name, Vector2 position, float scale, Sprite sprite)
         {
-            var player = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            player.name = "Player Helena Prototype";
-            player.transform.position = Vector3.zero;
-            player.transform.localScale = Vector3.one * 0.8f;
-            player.GetComponent<Renderer>().sharedMaterial = CreateMaterial("Player_Mat", new Color(0.23f, 0.7f, 0.45f));
-            Object.DestroyImmediate(player.GetComponent<Collider>());
-
-            var body = player.AddComponent<Rigidbody2D>();
-            body.gravityScale = 0f;
-            body.freezeRotation = true;
-            player.AddComponent<CircleCollider2D>();
-            player.AddComponent<Health>();
-            player.AddComponent<VirtualMoveInput>();
-            player.AddComponent<PlayerController2D>();
-
-            return player;
+            var marker = new GameObject(name);
+            marker.transform.position = new Vector3(position.x, position.y, 0f);
+            marker.transform.localScale = Vector3.one * scale;
+            var renderer = marker.AddComponent<SpriteRenderer>();
+            renderer.sprite = sprite;
+            renderer.sortingOrder = 10;
         }
 
-        private static void CreateBot(Vector2 position, Transform target)
+        private static Sprite CreateSpriteAsset(string name, Color color)
         {
-            var bot = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            bot.name = "Lunchyard Bot";
-            bot.transform.position = new Vector3(position.x, position.y, 0f);
-            bot.transform.localScale = Vector3.one * 0.7f;
-            bot.GetComponent<Renderer>().sharedMaterial = CreateMaterial("Bot_Mat", new Color(0.9f, 0.25f, 0.2f));
-            Object.DestroyImmediate(bot.GetComponent<Collider>());
-
-            var body = bot.AddComponent<Rigidbody2D>();
-            body.gravityScale = 0f;
-            body.freezeRotation = true;
-            bot.AddComponent<CircleCollider2D>();
-            bot.AddComponent<Health>();
-            var chase = bot.AddComponent<BotChaseController>();
-            chase.SetTarget(target);
-        }
-
-        private static Material CreateMaterial(string name, Color color)
-        {
-            var path = $"Assets/{name}.mat";
-            var existing = AssetDatabase.LoadAssetAtPath<Material>(path);
+            var path = $"{GeneratedArtPath}/{name}.png";
+            var existing = AssetDatabase.LoadAssetAtPath<Sprite>(path);
             if (existing != null)
             {
                 return existing;
             }
 
-            var material = new Material(Shader.Find("Sprites/Default"))
+            var texture = new Texture2D(32, 32, TextureFormat.RGBA32, false);
+            var pixels = new Color[32 * 32];
+            for (var i = 0; i < pixels.Length; i++)
             {
-                color = color
-            };
-            AssetDatabase.CreateAsset(material, path);
-            return material;
+                pixels[i] = color;
+            }
+
+            texture.SetPixels(pixels);
+            texture.Apply();
+            File.WriteAllBytes(path, texture.EncodeToPNG());
+            Object.DestroyImmediate(texture);
+            AssetDatabase.ImportAsset(path);
+
+            var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (importer != null)
+            {
+                importer.textureType = TextureImporterType.Sprite;
+                importer.spritePixelsPerUnit = 32f;
+                importer.mipmapEnabled = false;
+                importer.SaveAndReimport();
+            }
+
+            return AssetDatabase.LoadAssetAtPath<Sprite>(path);
         }
     }
 }
