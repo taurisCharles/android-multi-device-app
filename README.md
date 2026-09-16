@@ -9,14 +9,15 @@ Planned GitHub repository: `android-multi-device-app`
 - Engine: Unity 2D
 - Platform: Android
 - Input: on-screen virtual joystick plus attack and special buttons
-- First game mode: solo player versus bots
+- First prototype mode: solo player versus bots
+- Multiplayer MVP: 2-3 kids playing together versus bots
 - First testing path: Firebase App Distribution
 - Later testing path: Google Play Internal Testing
-- Multiplayer direction: offline MVP first, then private/local multiplayer, then online rooms
+- Multiplayer direction: co-op private rooms first, then broader online options
 
 ## MVP Goal
 
-Build a playable Android MVP where a player chooses a character, enters a schoolyard-themed arena, battles bots, earns wins, and unlocks new characters.
+Build a playable Android MVP where 2-3 kids can choose characters, enter a schoolyard-themed arena together, battle bots as a team, earn wins, and unlock new characters.
 
 ## Character Roster
 
@@ -41,9 +42,10 @@ Build a playable Android MVP where a player chooses a character, enters a school
 4. Player movement, health, and primary attack.
 5. Bot movement and attacks.
 6. Win/loss match flow.
-7. Local win counter.
-8. Character select and unlocks.
-9. Firebase App Distribution test build.
+7. 2-3 player co-op room flow.
+8. Local win counter.
+9. Character select and unlocks.
+10. Firebase App Distribution test build.
 
 ## Privacy Note
 

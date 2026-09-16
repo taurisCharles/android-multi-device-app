@@ -10,13 +10,13 @@ Tech selections:
 - Target platform: Android.
 - First testing path: Firebase App Distribution.
 - Later testing path: Google Play Internal Testing.
-- First multiplayer strategy: offline MVP first, then local/private multiplayer prototype.
+- First multiplayer strategy: 2-3 kids co-op versus bots as the target multiplayer MVP.
 
 ## Product Direction
 
 SchoolYardArea is a simple top-down Android arena game inspired by kid-friendly arcade brawlers. Players pick a character, enter a small schoolyard-themed arena, battle bots, earn wins, and unlock more characters.
 
-The first MVP should be fun offline before we add multiplayer. Multiplayer is important, but it will be much easier to build well after movement, combat, powers, match flow, and unlocks feel good.
+The first solo prototype should prove movement, combat, powers, match flow, and unlocks. The multiplayer MVP should let 2-3 kids play together cooperatively against bots.
 
 ## Engine Recommendation
 
@@ -45,7 +45,8 @@ The MVP should include:
 - Android build target.
 - Landscape orientation.
 - Schoolyard arcade arena.
-- One local player.
+- One local player for the first prototype.
+- 2-3 player co-op support for the multiplayer MVP.
 - On-screen movement joystick.
 - On-screen attack button.
 - On-screen special power button.
@@ -71,6 +72,7 @@ Out of MVP:
 
 - Real-money purchases.
 - Public matchmaking.
+- Competitive public PvP.
 - Accounts/login.
 - Chat.
 - Loot boxes.
@@ -114,16 +116,19 @@ Visual tone:
 
 ## First Game Mode
 
-Recommended first mode: solo battle versus bots.
+Recommended first prototype mode: solo battle versus bots.
+
+Target multiplayer MVP mode: 2-3 player co-op versus bots.
 
 Rules:
 
-- 1 player versus 3 bots.
+- Prototype: 1 player versus 3 bots.
+- Multiplayer MVP: 2-3 players versus waves of bots.
 - 2-minute match timer.
-- Player wins by being the last one standing or having the most knockouts when time expires.
-- Player loses if eliminated and no respawn remains.
+- Players win by clearing bot waves or surviving until time expires.
+- Players lose if the team is eliminated.
 
-We can add team battles, gem/token grab, and online multiplayer after the core arena works.
+We can add team battles, gem/token grab, and competitive PvP after the co-op arena works.
 
 ## Controls
 
@@ -182,16 +187,17 @@ Treat each character as a fictional arcade character inspired by a first name.
 
 ## Multiplayer Roadmap
 
-Phase 1: Offline MVP
+Phase 1: Offline Prototype
 
 - Player versus bots.
 - Local unlock progression.
 - Android test builds.
 
-Phase 2: Local Multiplayer Prototype
+Phase 2: Co-Op Multiplayer MVP
 
-- Same Wi-Fi private room or local network test.
-- 1v1 or 2v2.
+- 2-3 players in the same private room.
+- Team versus bots.
+- Room code or same-network join flow.
 - No accounts.
 
 Phase 3: Online Multiplayer
@@ -217,7 +223,7 @@ Phase 4: Store-Ready Multiplayer
 - One attack works.
 - One bot can chase and attack.
 
-### Milestone 2: MVP Match
+### Milestone 2: Solo MVP Match
 
 - 3 bots.
 - Health/damage/death.
@@ -225,21 +231,28 @@ Phase 4: Store-Ready Multiplayer
 - Timer and score.
 - Basic sound effects.
 
-### Milestone 3: Characters And Unlocks
+### Milestone 3: Co-Op MVP Match
+
+- 2-3 players can join the same match.
+- Players share a team objective.
+- Bots scale by player count.
+- Simple reconnect/restart behavior for family testing.
+
+### Milestone 4: Characters And Unlocks
 
 - 12 roster entries.
 - 3 tuned playable characters.
 - Win count saved locally.
 - Unlock flow implemented.
 
-### Milestone 4: Phone Testing
+### Milestone 5: Phone Testing
 
 - Firebase project configured.
 - Android build uploaded.
 - Testers invited.
 - Feedback list started.
 
-### Milestone 5: Polish Pass
+### Milestone 6: Polish Pass
 
 - Better sprites.
 - Particles.
