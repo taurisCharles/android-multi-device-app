@@ -6,10 +6,9 @@ namespace SchoolYardArea.Combat
     [RequireComponent(typeof(VirtualMoveInput))]
     public sealed class PlayerAbilityController : MonoBehaviour
     {
-        [SerializeField] private float primaryDamage = 18f;
-        [SerializeField] private float primaryRadius = 1.15f;
-        [SerializeField] private float primaryCooldown = 0.75f;
-        [SerializeField] private float primaryConeDegrees = 72f;
+        [SerializeField] private float primaryDamage = 24f;
+        [SerializeField] private float primaryRadius = 1.55f;
+        [SerializeField] private float primaryCooldown = 0.65f;
         [SerializeField] private float specialDamage = 48f;
         [SerializeField] private float specialRadius = 2.25f;
         [SerializeField] private float specialCooldown = 8.5f;
@@ -52,10 +51,8 @@ namespace SchoolYardArea.Combat
 
             nextPrimaryAt = Time.time + primaryCooldown;
             var hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, primaryRadius, hits, targetLayers);
-            var aim = input.Aim.sqrMagnitude > 0.01f ? input.Aim.normalized : Vector2.up;
-            var bestDot = Mathf.Cos(primaryConeDegrees * 0.5f * Mathf.Deg2Rad);
             Health bestTarget = null;
-            var bestScore = -1f;
+            var bestDistance = float.MaxValue;
 
             for (var i = 0; i < hitCount; i++)
             {
@@ -66,13 +63,8 @@ namespace SchoolYardArea.Combat
                 }
 
                 var toTarget = (Vector2)hit.transform.position - (Vector2)transform.position;
-                if (toTarget.sqrMagnitude < 0.01f)
-                {
-                    continue;
-                }
-
-                var dot = Vector2.Dot(aim, toTarget.normalized);
-                if (dot < bestDot || dot <= bestScore)
+                var distance = toTarget.sqrMagnitude;
+                if (distance >= bestDistance)
                 {
                     continue;
                 }
@@ -81,7 +73,7 @@ namespace SchoolYardArea.Combat
                 if (health != null)
                 {
                     bestTarget = health;
-                    bestScore = dot;
+                    bestDistance = distance;
                 }
             }
 
