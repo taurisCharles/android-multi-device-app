@@ -6,8 +6,8 @@ namespace SchoolYardArea.Runtime
     {
         private static GameAudio instance;
 
-        [SerializeField] private float musicVolume = 0.18f;
-        [SerializeField] private float sfxVolume = 0.55f;
+        [SerializeField] private float musicVolume = 0.42f;
+        [SerializeField] private float sfxVolume = 0.9f;
 
         private AudioSource musicSource;
         private AudioSource sfxSource;
@@ -37,6 +37,7 @@ namespace SchoolYardArea.Runtime
 
             musicSource.clip = CreateMusicLoop();
             musicSource.Play();
+            Play(healClip, 0.7f);
         }
 
         public static void PlayPunch() => instance?.Play(instance.punchClip, 0.75f);
@@ -68,9 +69,10 @@ namespace SchoolYardArea.Runtime
                 var beat = Mathf.FloorToInt(time * 2f) % notes.Length;
                 var local = time * 2f - Mathf.Floor(time * 2f);
                 var envelope = Mathf.Exp(-local * 3.2f);
-                var melody = Mathf.Sin(2f * Mathf.PI * notes[beat] * time) * envelope * 0.12f;
-                var bass = Mathf.Sin(2f * Mathf.PI * (notes[beat] * 0.5f) * time) * 0.055f;
-                data[i] = melody + bass;
+                var melody = Mathf.Sin(2f * Mathf.PI * notes[beat] * time) * envelope * 0.23f;
+                var harmony = Mathf.Sin(2f * Mathf.PI * (notes[beat] * 1.5f) * time) * envelope * 0.06f;
+                var bass = Mathf.Sin(2f * Mathf.PI * (notes[beat] * 0.5f) * time) * 0.12f;
+                data[i] = melody + harmony + bass;
             }
 
             var clip = AudioClip.Create("Schoolyard Loop", sampleCount, 1, sampleRate, false);

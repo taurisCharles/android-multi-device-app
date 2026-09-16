@@ -27,6 +27,9 @@ namespace SchoolYardArea.Runtime
         private GUIStyle smallStyle;
         private GUIStyle actionButtonStyle;
         private GUIStyle disabledButtonStyle;
+        private GUIStyle menuButtonStyle;
+        private GUIStyle panelStyle;
+        private bool isPaused;
 
         public void Configure(
             Health player,
@@ -68,6 +71,11 @@ namespace SchoolYardArea.Runtime
             }
         }
 
+        private void OnDisable()
+        {
+            Time.timeScale = 1f;
+        }
+
         private void OnGUI()
         {
             EnsureStyles();
@@ -83,6 +91,18 @@ namespace SchoolYardArea.Runtime
             var y = Screen.height - buttonSize - 32f * scale;
             var attackRect = new Rect(Screen.width - buttonSize * 2f - gap - 32f * scale, y, buttonSize, buttonSize);
             var specialRect = new Rect(Screen.width - buttonSize - 28f * scale, y, buttonSize, buttonSize);
+            var pauseRect = new Rect(Screen.width - 120f * scale, 24f * scale, 92f * scale, 54f * scale);
+
+            if (GUI.Button(pauseRect, isPaused ? "PLAY" : "PAUSE", menuButtonStyle))
+            {
+                SetPaused(!isPaused);
+            }
+
+            if (isPaused)
+            {
+                DrawPauseMenu(scale);
+                return;
+            }
 
             var primaryReady = abilities == null || abilities.PrimaryReady01 >= 1f;
             var specialReady = abilities == null || abilities.SpecialReady01 >= 1f;
@@ -102,6 +122,36 @@ namespace SchoolYardArea.Runtime
                 var message = playerHealth.IsKnockedOut ? "Try again!" : "Win! New classmates unlock with wins.";
                 GUI.Label(new Rect(Screen.width * 0.5f - 260f, Screen.height * 0.5f - 42f, 520f, 84f), message, titleStyle);
             }
+        }
+
+        private void DrawPauseMenu(float scale)
+        {
+            var panelWidth = 430f * scale;
+            var panelHeight = 280f * scale;
+            var panel = new Rect(Screen.width * 0.5f - panelWidth * 0.5f, Screen.height * 0.5f - panelHeight * 0.5f, panelWidth, panelHeight);
+            GUI.Box(panel, "", panelStyle);
+            GUI.Label(new Rect(panel.x, panel.y + 28f * scale, panel.width, 44f * scale), "Paused", titleStyle);
+
+            var buttonWidth = 300f * scale;
+            var buttonHeight = 62f * scale;
+            var resumeRect = new Rect(panel.center.x - buttonWidth * 0.5f, panel.y + 98f * scale, buttonWidth, buttonHeight);
+            var exitRect = new Rect(panel.center.x - buttonWidth * 0.5f, panel.y + 178f * scale, buttonWidth, buttonHeight);
+
+            if (GUI.Button(resumeRect, "RESUME", actionButtonStyle))
+            {
+                SetPaused(false);
+            }
+
+            if (GUI.Button(exitRect, "EXIT", actionButtonStyle))
+            {
+                Application.Quit();
+            }
+        }
+
+        private void SetPaused(bool nextPaused)
+        {
+            isPaused = nextPaused;
+            Time.timeScale = isPaused ? 0f : 1f;
         }
 
         private void OnBotKnockedOut(Health bot)
@@ -207,6 +257,18 @@ namespace SchoolYardArea.Runtime
             disabledButtonStyle = new GUIStyle(actionButtonStyle)
             {
                 normal = { textColor = new Color(0.55f, 0.55f, 0.55f) }
+            };
+            menuButtonStyle = new GUIStyle(actionButtonStyle)
+            {
+                fontSize = 15
+            };
+            panelStyle = new GUIStyle(GUI.skin.box)
+            {
+                normal =
+                {
+                    background = Texture2D.grayTexture,
+                    textColor = Color.white
+                }
             };
         }
     }
