@@ -8,7 +8,13 @@ namespace SchoolYardArea.AI
     {
         [SerializeField] private Transform target;
         [SerializeField] private float moveSpeed = 3.5f;
-        [SerializeField] private float stopDistance = 1.25f;
+        [SerializeField] private float stopDistance = 0.7f;
+
+        public void Configure(float speed, float nextStopDistance)
+        {
+            moveSpeed = speed;
+            stopDistance = nextStopDistance;
+        }
 
         private Rigidbody2D body;
         private Health health;

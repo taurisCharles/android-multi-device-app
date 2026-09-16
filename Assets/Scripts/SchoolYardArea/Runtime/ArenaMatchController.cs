@@ -71,6 +71,7 @@ namespace SchoolYardArea.Runtime
             GUI.Label(new Rect(24f, 18f, 520f, 44f), "SchoolYardArena", titleStyle);
             GUI.Label(new Rect(26f, 66f, 520f, 34f), $"Helena  HP {Mathf.CeilToInt(playerHealth.Current)}/{Mathf.CeilToInt(playerHealth.Max)}   Wins {progression.TotalWins}", hudStyle);
             GUI.Label(new Rect(26f, 104f, 620f, 32f), NextUnlockText(), smallStyle);
+            GUI.Label(new Rect(26f, 136f, 760f, 32f), "Drag to move and aim. Punch only hits in front.", smallStyle);
 
             var buttonSize = 112f * scale;
             var gap = 18f * scale;

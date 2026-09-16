@@ -5,8 +5,8 @@ namespace SchoolYardArea.Combat
 {
     public sealed class BotContactDamage : MonoBehaviour
     {
-        [SerializeField] private float damage = 10f;
-        [SerializeField] private float cooldown = 0.8f;
+        [SerializeField] private float damage = 16f;
+        [SerializeField] private float cooldown = 0.7f;
 
         private float nextHitAt;
 
