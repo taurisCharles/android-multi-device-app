@@ -27,6 +27,7 @@ namespace SchoolYardArea.Editor
             var bodySprite = CreateSpriteAsset("body_marker", Color.white, SpriteShape.Circle);
             var squareSprite = CreateSpriteAsset("ui_square", Color.white, SpriteShape.Square);
             var appleSprite = CreateSpriteAsset("apple_pickup", new Color(0.9f, 0.05f, 0.04f), SpriteShape.Circle);
+            var pulseSprite = CreateSpriteAsset("pulse_ring", Color.white, SpriteShape.Ring);
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             Physics2D.gravity = Vector2.zero;
@@ -47,7 +48,7 @@ namespace SchoolYardArea.Editor
             var pickups = CreatePickups(appleSprite, squareSprite);
 
             var playerSpawn = new Vector3(0f, -4.15f, 0f);
-            var player = CreateFighter("Helena", playerSpawn, 0.9f, playerSprite, bodySprite, squareSprite, true);
+            var player = CreateFighter("Helena", playerSpawn, 0.9f, playerSprite, bodySprite, squareSprite, pulseSprite, true);
 
             var botSpawns = new List<Vector3>
             {
@@ -59,7 +60,7 @@ namespace SchoolYardArea.Editor
 
             for (var i = 0; i < botSpawns.Count; i++)
             {
-                var bot = CreateFighter(botNames[i], botSpawns[i], 0.84f, botSprite, bodySprite, squareSprite, false);
+                var bot = CreateFighter(botNames[i], botSpawns[i], 0.84f, botSprite, bodySprite, squareSprite, pulseSprite, false);
                 var chase = bot.GetComponent<BotChaseController>();
                 chase.SetTarget(player.transform);
                 chase.Configure(2.65f, 0.66f);
@@ -127,6 +128,7 @@ namespace SchoolYardArea.Editor
             Sprite markerSprite,
             Sprite bodySprite,
             Sprite squareSprite,
+            Sprite pulseSprite,
             bool playerControlled)
         {
             var fighter = new GameObject(name);
@@ -146,7 +148,10 @@ namespace SchoolYardArea.Editor
             {
                 fighter.AddComponent<VirtualMoveInput>();
                 fighter.AddComponent<PlayerController2D>();
-                fighter.AddComponent<PlayerAbilityController>();
+                var abilities = fighter.AddComponent<PlayerAbilityController>();
+                var serialized = new SerializedObject(abilities);
+                serialized.FindProperty("pulseSprite").objectReferenceValue = pulseSprite;
+                serialized.ApplyModifiedPropertiesWithoutUndo();
             }
             else
             {
@@ -344,23 +349,33 @@ namespace SchoolYardArea.Editor
         private static Sprite CreateSpriteAsset(string name, Color color, SpriteShape shape)
         {
             var path = $"{GeneratedArtPath}/{name}.png";
-            var texture = new Texture2D(32, 32, TextureFormat.RGBA32, false);
-            var pixels = new Color[32 * 32];
-            for (var y = 0; y < 32; y++)
+            const int size = 64;
+            var texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            var pixels = new Color[size * size];
+            for (var y = 0; y < size; y++)
             {
-                for (var x = 0; x < 32; x++)
+                for (var x = 0; x < size; x++)
                 {
-                    var index = y * 32 + x;
+                    var index = y * size + x;
+                    var dx = x - (size - 1f) * 0.5f;
+                    var dy = y - (size - 1f) * 0.5f;
+                    var distance01 = Mathf.Sqrt(dx * dx + dy * dy) / (size * 0.5f);
+
                     if (shape == SpriteShape.Circle)
                     {
-                        var dx = x - 15.5f;
-                        var dy = y - 15.5f;
-                        var distance = Mathf.Sqrt(dx * dx + dy * dy);
-                        pixels[index] = distance <= 14.5f ? color : Color.clear;
+                        var lit = Color.Lerp(color * 0.78f, color * 1.18f, Mathf.Clamp01((y + x) / (float)(size * 2)));
+                        pixels[index] = distance01 <= 0.9f ? lit : Color.clear;
+                    }
+                    else if (shape == SpriteShape.Ring)
+                    {
+                        var alpha = distance01 is > 0.62f and < 0.9f ? 0.7f : 0f;
+                        pixels[index] = new Color(color.r, color.g, color.b, alpha);
                     }
                     else
                     {
-                        pixels[index] = color;
+                        var noise = Mathf.PerlinNoise((x + name.Length * 17) * 0.21f, (y + name.Length * 11) * 0.21f);
+                        var shade = Mathf.Lerp(0.9f, 1.08f, noise);
+                        pixels[index] = new Color(color.r * shade, color.g * shade, color.b * shade, color.a);
                     }
                 }
             }
@@ -375,7 +390,7 @@ namespace SchoolYardArea.Editor
             if (importer != null)
             {
                 importer.textureType = TextureImporterType.Sprite;
-                importer.spritePixelsPerUnit = 32f;
+                importer.spritePixelsPerUnit = 64f;
                 importer.mipmapEnabled = false;
                 importer.SaveAndReimport();
             }
@@ -386,7 +401,8 @@ namespace SchoolYardArea.Editor
         private enum SpriteShape
         {
             Square,
-            Circle
+            Circle,
+            Ring
         }
     }
 }

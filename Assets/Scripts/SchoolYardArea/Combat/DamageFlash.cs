@@ -10,6 +10,7 @@ namespace SchoolYardArea.Combat
 
         private Color[] baseColors;
         private float flashUntil;
+        private float lastCurrent;
 
         private void Awake()
         {
@@ -27,6 +28,11 @@ namespace SchoolYardArea.Combat
             for (var i = 0; i < renderers.Length; i++)
             {
                 baseColors[i] = renderers[i].color;
+            }
+
+            if (health != null)
+            {
+                lastCurrent = health.Current;
             }
         }
 
@@ -66,9 +72,16 @@ namespace SchoolYardArea.Combat
         {
             if (current >= max)
             {
+                lastCurrent = current;
                 return;
             }
 
+            if (current < lastCurrent)
+            {
+                SpawnFloatingText($"-{Mathf.CeilToInt(lastCurrent - current)}", new Color(1f, 0.28f, 0.18f));
+            }
+
+            lastCurrent = current;
             flashUntil = Time.time + flashSeconds;
             foreach (var spriteRenderer in renderers)
             {
@@ -77,6 +90,13 @@ namespace SchoolYardArea.Combat
                     spriteRenderer.color = Color.white;
                 }
             }
+        }
+
+        private void SpawnFloatingText(string message, Color color)
+        {
+            var textObject = new GameObject("Damage Text");
+            textObject.transform.position = transform.position + new Vector3(0f, 1.55f, 0f);
+            textObject.AddComponent<FloatingText>().Configure(message, color, 60);
         }
     }
 }

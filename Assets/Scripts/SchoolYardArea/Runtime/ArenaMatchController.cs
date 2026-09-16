@@ -25,6 +25,8 @@ namespace SchoolYardArea.Runtime
         private GUIStyle titleStyle;
         private GUIStyle hudStyle;
         private GUIStyle smallStyle;
+        private GUIStyle actionButtonStyle;
+        private GUIStyle disabledButtonStyle;
 
         public void Configure(
             Health player,
@@ -82,19 +84,18 @@ namespace SchoolYardArea.Runtime
             var attackRect = new Rect(Screen.width - buttonSize * 2f - gap - 32f * scale, y, buttonSize, buttonSize);
             var specialRect = new Rect(Screen.width - buttonSize - 28f * scale, y, buttonSize, buttonSize);
 
-            GUI.enabled = abilities == null || abilities.PrimaryReady01 >= 1f;
-            if (GUI.Button(attackRect, "Punch"))
+            var primaryReady = abilities == null || abilities.PrimaryReady01 >= 1f;
+            var specialReady = abilities == null || abilities.SpecialReady01 >= 1f;
+
+            if (GUI.Button(attackRect, primaryReady ? "PUNCH" : "WAIT", primaryReady ? actionButtonStyle : disabledButtonStyle) && primaryReady)
             {
                 playerInput.PressAttack();
             }
 
-            GUI.enabled = abilities == null || abilities.SpecialReady01 >= 1f;
-            if (GUI.Button(specialRect, "Special"))
+            if (GUI.Button(specialRect, specialReady ? "SPECIAL" : $"{Mathf.CeilToInt((1f - abilities.SpecialReady01) * 9f)}", specialReady ? actionButtonStyle : disabledButtonStyle) && specialReady)
             {
                 playerInput.PressSpecial();
             }
-
-            GUI.enabled = true;
 
             if (roundEnded)
             {
@@ -191,6 +192,19 @@ namespace SchoolYardArea.Runtime
             {
                 fontSize = 18,
                 normal = { textColor = new Color(0.9f, 0.96f, 1f) }
+            };
+            actionButtonStyle = new GUIStyle(GUI.skin.button)
+            {
+                fontSize = 18,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = new Color(1f, 0.95f, 0.75f) },
+                hover = { textColor = Color.white },
+                active = { textColor = Color.white },
+                alignment = TextAnchor.MiddleCenter
+            };
+            disabledButtonStyle = new GUIStyle(actionButtonStyle)
+            {
+                normal = { textColor = new Color(0.55f, 0.55f, 0.55f) }
             };
         }
     }

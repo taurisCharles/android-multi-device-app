@@ -12,6 +12,7 @@ namespace SchoolYardArea.Combat
         [SerializeField] private float specialDamage = 48f;
         [SerializeField] private float specialRadius = 2.25f;
         [SerializeField] private float specialCooldown = 8.5f;
+        [SerializeField] private Sprite pulseSprite;
         [SerializeField] private LayerMask targetLayers = ~0;
 
         private readonly Collider2D[] hits = new Collider2D[16];
@@ -50,6 +51,7 @@ namespace SchoolYardArea.Combat
             }
 
             nextPrimaryAt = Time.time + primaryCooldown;
+            SpawnPulse(primaryRadius, new Color(1f, 0.92f, 0.24f, 0.45f));
             var hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, primaryRadius, hits, targetLayers);
             Health bestTarget = null;
             var bestDistance = float.MaxValue;
@@ -91,6 +93,7 @@ namespace SchoolYardArea.Combat
             }
 
             nextReadyAt = Time.time + cooldown;
+            SpawnPulse(radius, new Color(0.35f, 0.85f, 1f, 0.38f));
             var hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, radius, hits, targetLayers);
 
             for (var i = 0; i < hitCount; i++)
@@ -107,6 +110,18 @@ namespace SchoolYardArea.Combat
                     health.TakeDamage(damage);
                 }
             }
+        }
+
+        private void SpawnPulse(float radius, Color color)
+        {
+            if (pulseSprite == null)
+            {
+                return;
+            }
+
+            var pulse = new GameObject("Combat Pulse");
+            pulse.transform.position = transform.position + new Vector3(0f, 0f, 0.1f);
+            pulse.AddComponent<CombatPulse>().Configure(pulseSprite, color, radius, 7);
         }
     }
 }

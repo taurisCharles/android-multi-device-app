@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: dbc09030172ca3b439b5705e659606c9
+guid: 9072c6872bab5734ab9d5d4042ff1cee
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5126530523286598344
-    second: apple_pickup_0
+      213: -1175197818199120203
+    second: pulse_ring_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,13 +115,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: apple_pickup_0
+      name: pulse_ring_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,8 +130,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 83d0e4d86a7ead8b0800000000000000
-      internalID: -5126530523286598344
+      spriteID: 5b66d619fcbd0bfe0800000000000000
+      internalID: -1175197818199120203
       vertices: []
       indices: 
       edges: []
@@ -150,7 +150,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      apple_pickup_0: -5126530523286598344
+      pulse_ring_0: -1175197818199120203
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
