@@ -37,6 +37,7 @@ namespace SchoolYardArea.Editor
             var cameraComponent = camera.AddComponent<Camera>();
             cameraComponent.orthographic = true;
             cameraComponent.orthographicSize = 7.1f;
+            cameraComponent.clearFlags = CameraClearFlags.SolidColor;
             cameraComponent.backgroundColor = new Color(0.23f, 0.36f, 0.39f);
             camera.transform.position = new Vector3(0f, 0f, -10f);
 
@@ -301,6 +302,16 @@ namespace SchoolYardArea.Editor
             CreateSpriteObject("Basketball Backboard", squareSprite, new Vector3(8.15f, 5.1f, 0f), new Vector3(1.05f, 0.52f, 1f), new Color(0.92f, 0.94f, 0.9f), -1);
             CreateSpriteObject("Basketball Rim", bodySprite, new Vector3(8.15f, 4.8f, 0f), new Vector3(0.55f, 0.18f, 1f), new Color(0.95f, 0.28f, 0.12f), 0);
             CreateSpriteObject("Lunch Ball", bodySprite, new Vector3(6.8f, -4.55f, 0f), new Vector3(0.38f, 0.38f, 1f), new Color(0.95f, 0.48f, 0.12f), 0);
+            CreateSpriteObject("Cone Left Shadow", bodySprite, new Vector3(-2.8f, 4.75f, 0f), new Vector3(0.46f, 0.2f, 1f), new Color(0f, 0f, 0f, 0.18f), -1);
+            CreateSpriteObject("Cone Left", squareSprite, new Vector3(-2.8f, 4.92f, 0f), new Vector3(0.34f, 0.42f, 1f), new Color(1f, 0.48f, 0.08f), 0);
+            CreateSpriteObject("Cone Right Shadow", bodySprite, new Vector3(2.8f, -4.75f, 0f), new Vector3(0.46f, 0.2f, 1f), new Color(0f, 0f, 0f, 0.18f), -1);
+            CreateSpriteObject("Cone Right", squareSprite, new Vector3(2.8f, -4.92f, 0f), new Vector3(0.34f, 0.42f, 1f), new Color(1f, 0.48f, 0.08f), 0);
+            CreateSpriteObject("Lunch Table Top", squareSprite, new Vector3(-7.35f, 4.65f, 0f), new Vector3(1.7f, 0.55f, 1f), new Color(0.42f, 0.22f, 0.12f), -1);
+            CreateSpriteObject("Lunch Table Highlight", squareSprite, new Vector3(-7.35f, 4.82f, 0f), new Vector3(1.55f, 0.08f, 1f), new Color(0.62f, 0.36f, 0.2f), 0);
+            CreateSpriteObject("Tree Canopy Left", bodySprite, new Vector3(-10.75f, 4.75f, 0f), new Vector3(1.35f, 1.35f, 1f), new Color(0.16f, 0.48f, 0.22f), -5);
+            CreateSpriteObject("Tree Trunk Left", squareSprite, new Vector3(-10.75f, 3.85f, 0f), new Vector3(0.26f, 0.72f, 1f), new Color(0.36f, 0.2f, 0.1f), -6);
+            CreateSpriteObject("Tree Canopy Right", bodySprite, new Vector3(10.75f, -4.7f, 0f), new Vector3(1.25f, 1.25f, 1f), new Color(0.16f, 0.48f, 0.22f), -5);
+            CreateSpriteObject("Tree Trunk Right", squareSprite, new Vector3(10.75f, -5.52f, 0f), new Vector3(0.24f, 0.62f, 1f), new Color(0.36f, 0.2f, 0.1f), -6);
         }
 
         private static List<GameObject> CreatePickups(Sprite appleSprite, Sprite squareSprite)
