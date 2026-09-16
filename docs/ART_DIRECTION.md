@@ -2,9 +2,9 @@
 
 ## Goal
 
-Move SchoolYardArena from prototype shape art to a modern, kid-friendly 2D arcade look that still builds quickly in Unity and reads clearly on Android phones.
+Move SchoolYardArena from prototype shape art to a modern, kid-friendly 2D/2.5D arcade look that still builds quickly in Unity and reads clearly on Android phones.
 
-The target is not to clone Brawl Stars. The target is a bright schoolyard arena game with enough art, animation, VFX, and UI polish that it no longer feels like debug geometry.
+The primary style reference is Warcraft 3's readable isometric diorama feel, adapted into a bright schoolyard arcade game. Brawl Stars remains a secondary reference for mobile input clarity, large buttons, and quick combat feedback.
 
 ## Visual Pillars
 
@@ -30,17 +30,36 @@ The target is not to clone Brawl Stars. The target is a bright schoolyard arena 
 
 ## Target Style
 
-Recommended style: **2D/2.5D cartoon mobile arena**.
+Recommended style: **Warcraft 3-inspired schoolyard diorama with mobile arcade controls**.
 
 Characteristics:
 
-- Top-down / slightly tilted 2D perspective.
-- Painted schoolyard floor with texture, scuffs, chalk, and props.
-- Characters as animated sprite sheets or layered 2D puppet sprites.
+- Slight isometric / three-quarter top-down presentation.
+- Miniature diorama feel: the arena should feel like a crafted playset.
+- Chunky readable terrain shapes and props.
+- Painted schoolyard floor with texture, scuffs, chalk, and readable height/edge cues.
+- Characters as animated sprite sheets, layered 2D puppet sprites, or low-poly 2.5D renders.
 - Soft circular shadows under characters.
 - Thick readable outlines.
+- Clear team/opponent colors.
 - Bright but not neon-heavy palette.
 - Simple effects: punch arc, shockwave, hit starburst, heal sparkle.
+
+Primary reference qualities from Warcraft 3:
+
+- Readable silhouettes from a pulled-back camera.
+- Strong unit shadows.
+- Exaggerated proportions.
+- Terrain that supports gameplay readability.
+- Props that sell the world without obscuring units.
+- Ability effects with clear visual tells.
+
+Secondary reference qualities from mobile arena games:
+
+- Large touch controls.
+- Fast combat feedback.
+- Clear cooldown states.
+- Phone-safe HUD layout.
 
 ## Palette
 
@@ -63,6 +82,9 @@ Avoid:
 - Overly dark blue/slate scenes.
 - One-color UIs.
 - Tiny low-contrast details.
+- Dense RTS interface panels.
+- Tiny RTS-scale characters.
+- Dark fantasy props, armor, races, buildings, or icons.
 
 ## Asset Checklist For Visual Slice
 
@@ -208,23 +230,26 @@ Avoid:
 
 ## Reference Handling
 
-Brawl Stars screenshots and community posts can be used as visual references for quality level and readability, but not as source assets.
+Warcraft 3 should be used as the primary style reference for readability, staging, and diorama-like presentation. Brawl Stars screenshots and community posts can be used as secondary visual references for quality level, mobile UI clarity, and combat feedback. Neither should be used as source assets.
 
 Use references to study:
 
 - Chunky character silhouettes.
-- Bright, high-contrast arenas.
 - Isometric/top-down staging.
+- Diorama-style terrain framing.
+- Strong unit shadows.
+- Bright, high-contrast arenas.
 - Large readable mobile buttons.
 - Strong hit effects and cooldown feedback.
 - Clear separation between character, ground, pickups, and UI.
 
 Do not:
 
+- Copy Blizzard/Warcraft characters, buildings, icons, UI, textures, races, armor, or terrain assets.
 - Copy Supercell/Brawl Stars characters, UI, maps, icons, screenshots, or textures.
 - Trace screenshots.
-- Recreate named brawlers or branded interface elements.
-- Import Reddit or Brawl Stars images into the Unity project as game assets.
+- Recreate named brawlers, Warcraft units, or branded interface elements.
+- Import Reddit, Brawl Stars, or Warcraft images into the Unity project as game assets.
 
 ## Definition Of Done For The Visual Slice
 

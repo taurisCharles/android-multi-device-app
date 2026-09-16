@@ -109,6 +109,8 @@ Art direction:
 
 - The prototype currently uses generated placeholder sprites.
 - The next major improvement should be an asset-driven visual slice, not more generated shape polish.
+- Primary visual reference: Warcraft 3-style readable isometric diorama staging, adapted to a schoolyard theme.
+- Secondary reference: mobile arena polish for controls, feedback, and HUD clarity.
 - See `docs/ART_DIRECTION.md` for the target 2D/2.5D mobile arcade style, asset checklist, and acceptance criteria.
 
 ## Core Loop
