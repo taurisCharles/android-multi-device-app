@@ -21,6 +21,7 @@ namespace SchoolYardArea.Combat
             }
 
             health.Heal(healAmount);
+            GameAudio.PlayHeal();
             SpawnFloatingText($"+{Mathf.CeilToInt(healAmount)}", new Color(0.35f, 1f, 0.42f), other.transform.position);
             gameObject.SetActive(false);
         }

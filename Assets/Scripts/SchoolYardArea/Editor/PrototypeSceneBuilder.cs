@@ -29,6 +29,7 @@ namespace SchoolYardArea.Editor
             var squareSprite = CreateSpriteAsset("ui_square", Color.white, SpriteShape.Square);
             var appleSprite = CreateSpriteAsset("apple_pickup", new Color(0.9f, 0.05f, 0.04f), SpriteShape.Circle);
             var pulseSprite = CreateSpriteAsset("pulse_ring", Color.white, SpriteShape.Ring);
+            var lightSprite = CreateSpriteAsset("soft_light", Color.white, SpriteShape.SoftCircle);
 
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             Physics2D.gravity = Vector2.zero;
@@ -47,6 +48,7 @@ namespace SchoolYardArea.Editor
             if (importedArena != null)
             {
                 CreateArenaFloor(importedArena);
+                CreateArenaLighting(squareSprite, lightSprite);
             }
             else
             {
@@ -90,6 +92,8 @@ namespace SchoolYardArea.Editor
                 botSpawns,
                 pickups);
 
+            new GameObject("Game Audio").AddComponent<GameAudio>();
+
             EditorSceneManager.SaveScene(scene, ScenePath);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
             AssetDatabase.SaveAssets();
@@ -105,6 +109,14 @@ namespace SchoolYardArea.Editor
             var renderer = floor.AddComponent<SpriteRenderer>();
             renderer.sprite = sprite;
             renderer.sortingOrder = -10;
+        }
+
+        private static void CreateArenaLighting(Sprite squareSprite, Sprite lightSprite)
+        {
+            CreateSpriteObject("Arena Wash", squareSprite, new Vector3(0f, 0f, 0f), new Vector3(18.6f, 11.4f, 1f), new Color(0.96f, 0.9f, 0.72f, 0.2f), -8);
+            CreateSpriteObject("Upper Left Light", lightSprite, new Vector3(-4.7f, 3.2f, 0f), new Vector3(9.5f, 6.6f, 1f), new Color(1f, 0.95f, 0.72f, 0.22f), -7);
+            CreateSpriteObject("Lower Right Shadow", lightSprite, new Vector3(5.8f, -3.3f, 0f), new Vector3(8.2f, 5.2f, 1f), new Color(0.06f, 0.08f, 0.1f, 0.16f), -7);
+            CreateSpriteObject("Button Area Calm", squareSprite, new Vector3(7.3f, -4.65f, 0f), new Vector3(4.2f, 1.6f, 1f), new Color(0.08f, 0.1f, 0.1f, 0.12f), -6);
         }
 
         private static void CreateCourtLines(Sprite sprite)
@@ -406,6 +418,12 @@ namespace SchoolYardArea.Editor
                         var alpha = distance01 is > 0.62f and < 0.9f ? 0.7f : 0f;
                         pixels[index] = new Color(color.r, color.g, color.b, alpha);
                     }
+                    else if (shape == SpriteShape.SoftCircle)
+                    {
+                        var alpha = Mathf.Clamp01(1f - distance01);
+                        alpha *= alpha;
+                        pixels[index] = new Color(color.r, color.g, color.b, alpha);
+                    }
                     else
                     {
                         var noise = Mathf.PerlinNoise((x + name.Length * 17) * 0.21f, (y + name.Length * 11) * 0.21f);
@@ -457,7 +475,8 @@ namespace SchoolYardArea.Editor
         {
             Square,
             Circle,
-            Ring
+            Ring,
+            SoftCircle
         }
     }
 }

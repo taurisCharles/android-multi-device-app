@@ -117,11 +117,13 @@ namespace SchoolYardArea.Runtime
             }
 
             progression.AddWin();
+            GameAudio.PlayWin();
             EndRound();
         }
 
         private void OnPlayerKnockedOut(Health _)
         {
+            GameAudio.PlayLose();
             EndRound();
         }
 

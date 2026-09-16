@@ -1,4 +1,5 @@
 using UnityEngine;
+using SchoolYardArea.Runtime;
 
 namespace SchoolYardArea.Combat
 {
@@ -78,6 +79,7 @@ namespace SchoolYardArea.Combat
 
             if (current < lastCurrent)
             {
+                GameAudio.PlayHit();
                 SpawnFloatingText($"-{Mathf.CeilToInt(lastCurrent - current)}", new Color(1f, 0.28f, 0.18f));
             }
 

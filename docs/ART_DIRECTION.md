@@ -173,6 +173,13 @@ Acceptance:
 - Sounds confirm player actions.
 - Volumes are kid-friendly and not harsh.
 
+Implementation note:
+
+- The current build may use procedural placeholder audio for safe iteration.
+- Before broader distribution, replace placeholder audio with vetted open-source or original assets.
+- Track the source URL, license, author, and attribution text for every imported audio file.
+- Good candidates to evaluate later: Kenney audio packs, OpenGameArt assets with clear licenses, and original generated/recorded sounds.
+
 ## Production Strategy
 
 ### Phase 1: Replace The Arena

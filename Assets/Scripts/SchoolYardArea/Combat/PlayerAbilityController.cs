@@ -1,4 +1,5 @@
 using SchoolYardArea.Input;
+using SchoolYardArea.Runtime;
 using UnityEngine;
 
 namespace SchoolYardArea.Combat
@@ -51,6 +52,7 @@ namespace SchoolYardArea.Combat
             }
 
             nextPrimaryAt = Time.time + primaryCooldown;
+            GameAudio.PlayPunch();
             SpawnPulse(primaryRadius, new Color(1f, 0.92f, 0.24f, 0.45f));
             var hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, primaryRadius, hits, targetLayers);
             Health bestTarget = null;
@@ -93,6 +95,7 @@ namespace SchoolYardArea.Combat
             }
 
             nextReadyAt = Time.time + cooldown;
+            GameAudio.PlaySpecial();
             SpawnPulse(radius, new Color(0.35f, 0.85f, 1f, 0.38f));
             var hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, radius, hits, targetLayers);
 
