@@ -43,6 +43,8 @@ gradle-app.setting
 Thumbs.db
 .idea/
 .vscode/
+.utmp/
 
 # Local installers
 UnitySetup-*.exe
+tools/

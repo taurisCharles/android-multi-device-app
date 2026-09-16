@@ -1,5 +1,8 @@
 using System.IO;
 using UnityEditor;
+using UnityEditor.Android;
+using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
 
 namespace SchoolYardArea.Editor
 {
@@ -13,6 +16,7 @@ namespace SchoolYardArea.Editor
             PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
+            ConfigureAndroidExternalTools();
 
             Directory.CreateDirectory("Builds/Android");
 
@@ -45,6 +49,13 @@ namespace SchoolYardArea.Editor
             }
 
             return enabledScenes.ToArray();
+        }
+
+        private static void ConfigureAndroidExternalTools()
+        {
+            AndroidExternalToolsSettings.jdkRootPath = @"C:\Dev\SchoolYardArea\tools\jdk17\jdk-17.0.20+8";
+            AndroidExternalToolsSettings.sdkRootPath = @"C:\Users\cjlew\AppData\Local\Android\Sdk";
+            AndroidExternalToolsSettings.ndkRootPath = @"C:\Users\cjlew\AppData\Local\Android\Sdk\ndk\27.2.12479018";
         }
     }
 }

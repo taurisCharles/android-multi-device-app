@@ -9,6 +9,7 @@ namespace SchoolYardArea.Runtime
     [RequireComponent(typeof(Health))]
     public sealed class PlayerController2D : MonoBehaviour
     {
+        [SerializeField] private float fallbackMoveSpeed = 5f;
         [SerializeField] private CharacterDefinition character;
         [SerializeField] private VirtualMoveInput input;
 
@@ -19,6 +20,7 @@ namespace SchoolYardArea.Runtime
         {
             body = GetComponent<Rigidbody2D>();
             health = GetComponent<Health>();
+            input ??= GetComponent<VirtualMoveInput>();
 
             if (character != null)
             {
@@ -28,13 +30,14 @@ namespace SchoolYardArea.Runtime
 
         private void FixedUpdate()
         {
-            if (input == null || character == null || health.IsKnockedOut)
+            if (input == null || health.IsKnockedOut)
             {
-                body.velocity = Vector2.zero;
+                body.linearVelocity = Vector2.zero;
                 return;
             }
 
-            body.velocity = input.Move * character.moveSpeed;
+            var moveSpeed = character != null ? character.moveSpeed : fallbackMoveSpeed;
+            body.linearVelocity = input.Move * moveSpeed;
         }
     }
 }

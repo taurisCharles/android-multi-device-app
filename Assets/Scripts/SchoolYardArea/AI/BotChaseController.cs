@@ -23,12 +23,12 @@ namespace SchoolYardArea.AI
         {
             if (target == null || health != null && health.IsKnockedOut)
             {
-                body.velocity = Vector2.zero;
+                body.linearVelocity = Vector2.zero;
                 return;
             }
 
             Vector2 delta = target.position - transform.position;
-            body.velocity = delta.magnitude <= stopDistance ? Vector2.zero : delta.normalized * moveSpeed;
+            body.linearVelocity = delta.magnitude <= stopDistance ? Vector2.zero : delta.normalized * moveSpeed;
         }
 
         public void SetTarget(Transform nextTarget)
