@@ -3,11 +3,14 @@ using UnityEditor;
 using UnityEditor.Android;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
+using UnityEngine;
 
 namespace SchoolYardArea.Editor
 {
     public static class AndroidBuild
     {
+        private const string AppIconPath = "Assets/Art/Icons/schoolyard_punch_icon.png";
+
         public static void BuildDebugApk()
         {
             PlayerSettings.companyName = "Tauris";
@@ -17,6 +20,7 @@ namespace SchoolYardArea.Editor
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
             ConfigureAndroidExternalTools();
+            ConfigureAppIcon();
 
             Directory.CreateDirectory("Builds/Android");
 
@@ -56,6 +60,26 @@ namespace SchoolYardArea.Editor
             AndroidExternalToolsSettings.jdkRootPath = @"C:\Dev\SchoolYardArea\tools\jdk17\jdk-17.0.20+8";
             AndroidExternalToolsSettings.sdkRootPath = @"C:\Users\cjlew\AppData\Local\Android\Sdk";
             AndroidExternalToolsSettings.ndkRootPath = @"C:\Users\cjlew\AppData\Local\Android\Sdk\ndk\27.2.12479018";
+        }
+
+        private static void ConfigureAppIcon()
+        {
+            var importer = AssetImporter.GetAtPath(AppIconPath) as TextureImporter;
+            if (importer != null)
+            {
+                importer.textureType = TextureImporterType.GUI;
+                importer.alphaIsTransparency = true;
+                importer.mipmapEnabled = false;
+                importer.SaveAndReimport();
+            }
+
+            var icon = AssetDatabase.LoadAssetAtPath<Texture2D>(AppIconPath);
+            if (icon == null)
+            {
+                throw new FileNotFoundException($"App icon not found at {AppIconPath}");
+            }
+
+            PlayerSettings.SetIconsForTargetGroup(BuildTargetGroup.Android, new[] { icon });
         }
     }
 }
